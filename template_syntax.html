@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <style type="text/css">
+    em {
+        font-style: normal;
+        background-color: #f5f5f5;
+        padding: 2px 2px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <p>插值</p>
+        <p>#文本</p>
+        <em>{{msg}}</em>
+        <p v-once> this will be never change <em>{{msg}}</em></p>
+        <a href="javascript:;" v-on:click="msg += ' change'">change</a>
+        <p>#纯HTML</p>
+        <em>双大括号会将数据解释为纯文本，而非 HTML 。为了输出真正的 HTML ，你需要使用 v-html 指令<br/>
+        被插入的内容都会被当做 HTML —— 数据绑定会被忽略。<br/>
+        注意，你不能使用 v-html 来复合局部模板，因为 Vue 不是基于字符串的模板引擎。<br/>
+        组件更适合担任 UI 重用与复合的基本单元。</em>
+        <p>{{html}}</p>
+        <p v-html='html'></p>
+        <p>#属性</p>
+        <em>Mustache 不能在 HTML 属性中使用，应使用 v-bind 指令</em>
+        <button v-bind:disabled="disabled">submit</button>
+        <a href="javascript:;" v-on:click="disabled = !disabled">toggle</a>
+        <p>#JavaScript 表达式</p>
+        <em href="javascript:;">disabled > {{disabled ? 'yes':'no'}}</em>
+        <p>#修饰符</p>
+            v-on:submit.prevent
+        <form v-on:submit.prevent="onSubmit"></form>
+        <p>#过滤器</p>
+        <p>{{filter}}</p>
+        <p>#缩写</p>
+        <p>v-bind缩写：v-bind:href === :href</p>
+        <p>v-on缩写：v-on:click ==== @click</p>
+    </div>
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            msg: 'hello',
+            html: '<span>hello</span>',
+            disabled: false,
+            filter:'{{message | capitalize}}'
+        }
+    })
+    </script>
+</body>
+
+</html>

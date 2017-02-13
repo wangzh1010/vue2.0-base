@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{message}}</p>
+        <p v-bind:title="title">Hover your mouse over me for a few seconds to see my dynamically bound title!</p>
+        <div><span v-if="seen">now you see me</span> <a href="javascript:;" v-on:click="seen = !seen">toggle</a></div>
+        <div>
+            <a href="javascript:;" v-on:click="add">add</a>
+            <a href="javascript:;" v-on:click="del">del</a>
+            <ul>
+                <li v-for="stu in students">{{stu.name}}</li>
+            </ul>
+        </div>
+        <p>{{rMsg}} <a href="javascript:;" v-on:click="reverseMessage">Reverse Message</a></p>
+        <input type="text" name="" v-model="message">
+        <div>
+            <p>组件</p>
+            <ol>
+                <todo v-for="item in items" v-bind:item='item'></todo>
+            </ol>
+        </div>
+    </div>
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript">
+    Vue.component('todo', {
+        props: ['item'],
+        template: '<li>{{item.title}}</li>'
+    });
+    var app = new Vue({
+        el: '#app',
+        data: {
+            rMsg: 'Hello Vue.js!',
+            message: 'hello vue',
+            title: 'You loaded this page on ' + new Date(),
+            seen: true,
+            students: [{
+                name: 'Ann'
+            }, {
+                name: 'Jmm'
+            }, {
+                name: 'Lee'
+            }, {
+                name: 'Lii'
+            }],
+            items: [{
+                title: 'Vegetables'
+            }, {
+                title: 'Cheese'
+            }, {
+                title: 'Whatever else humans are supposed to eat'
+            }]
+        },
+        methods: {
+            reverseMessage: function() {
+                this.rMsg = this.rMsg.split('').reverse().join('');
+            },
+            add: function() {
+                var len = this.students.length;
+                this.students.push({
+                    name: 'Wii' + len
+                });
+            },
+            del: function() {
+                this.students.shift();
+            },
+            related: function() {
+
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>

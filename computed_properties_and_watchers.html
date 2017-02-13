@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <style type="text/css">
+    em {
+        font-style: normal;
+        background-color: #f5f5f5;
+        padding: 2px 2px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <em>你可以像绑定普通属性一样在模板中绑定计算属性</em>
+        <p>Original message: "{{ message }}"</p>
+        <em>计算属性是基于它的依赖缓存</em>
+        <p>Computed reversed message: "{{ reversedMessage }}"</p>
+        <em>methods</em>
+        <p>Computed reversed message2: "{{ reversedMessage2()}}"</p>
+        <p>your first name <em>{{fname}}</em></p>
+        <p>your last name <em>{{lname}}</em></p>
+        <p>your full name <em>{{fullName}}</em></p>
+        <input type="text" v-model="vinput" @blur="fullName = vinput">
+    </div>
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            message: 'hello',
+            fname: 'Foo',
+            lname: 'Koo',
+            vinput: 'cpu gpu'
+        },
+        computed: {
+            reversedMessage: function() {
+                return this.message.split('').reverse().join('');
+            },
+            fullName: {
+                get: function() {
+                    return this.fname + ' ' + this.lname;
+                },
+                set: function(fname) {
+                    var names = fname.split(' ');
+                    this.fname = names[0];
+                    this.lname = names[names.length - 1];
+                }
+            }
+        },
+        methods: {
+            reversedMessage2: function() {
+                return this.message.split('').reverse().join('');
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>

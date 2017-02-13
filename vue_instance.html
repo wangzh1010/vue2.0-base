@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+</head>
+
+<body>
+    <div id="app">
+        <p>{{a}}</p>
+        <p>Vue 实例暴露了一些有用的实例属性与方法。这些属性与方法都有前缀 $，以便与代理的 data 属性区分。</p>
+        <p>app.$data === data</p>
+        <p>app.$el === document.getElementById('app')</p>
+        <p><a href="javascript:;" v-on:click="a++">increase</a></p>
+        <a href="javascript:;" v-on:click="destroy">destroy vue</a>
+        <p>生命周期</p>
+        <p>
+            <img src="lifecycle.png" width="800">
+        </p>
+    </div>
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript">
+    var data = {
+        a: 1
+    }
+    var app = new Vue({
+        el: '#app',
+        data: data,
+        mounted: function() {
+            console.log('mounted');
+        },
+        created: function() {
+            console.log('a is created ' + this.a);
+        },
+        updated: function() {
+            console.log('a is updated ' + this.a);
+        },
+        destroyed: function() {
+            console.log('destroyed');
+        },
+        methods: {
+            destroy: function() {
+                app.$destroy();
+                alert('destroyed');
+            }
+        },
+        computed: {
+
+        },
+        watch: {
+            a: function(newVal, oldVal) {
+                alert('newVal: ' + newVal + ' oldVal: ' + oldVal);
+            }
+        }
+    });
+    app.$watch('a', function(newVal, oldVal) {
+        console.log('newVal: ' + newVal + ' oldVal: ' + oldVal);
+    });
+    </script>
+</body>
+
+</html>

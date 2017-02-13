@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title></title>
+    <style type="text/css">
+    em {
+        font-style: normal;
+        background-color: #f5f5f5;
+        color: #e60000;
+        padding: 2px 2px;
+    }
+
+    .static {
+        font-family: 'Microsoft YaHei';
+    }
+
+    .active {
+        background-color: #f6f6f6;
+    }
+
+    .high,
+    .danger,
+    .danger-text {
+        color: #e60000;
+    }
+
+    .normal {
+        color: #00ff00;
+    }
+
+    .low {
+        color: #ff00ff;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="static" :class="{active:isActive,danger:hasError}">
+            数据绑定一个常见需求是操作元素的 class 列表和它的内联样式。因为它们都是属性 ，我们可以用v-bind 处理它们：只需要计算出表达式最终的字符串。不过，字符串拼接麻烦又易错。因此，在 v-bind 用于 class 和 style 时， Vue.js 专门增强了它。表达式的结果类型除了字符串之外，还可以是对象或数组。
+            <a href="javascript:;" @click="isActive = !isActive">toggle</a>
+            <a href="javascript:;" @click="hasError = !hasError">toggle</a>
+        </div>
+        <em>你也可以直接绑定数据里的一个对象</em>
+        <div class="static" :class="classObject">
+            数据绑定一个常见需求是操作元素的 class 列表和它的内联样式。因为它们都是属性 ，我们可以用v-bind 处理它们：只需要计算出表达式最终的字符串。不过，字符串拼接麻烦又易错。因此，在 v-bind 用于 class 和 style 时， Vue.js 专门增强了它。表达式的结果类型除了字符串之外，还可以是对象或数组。
+            <a href="javascript:;" @click="classObject.active = !classObject.active">toggle</a>
+            <a href="javascript:;" @click="changeColor()">toggle</a>
+        </div>
+        <em>计算属性</em>
+        <a href="javascript:;" @click="count--">decrease</a>
+        <span style="font-size: 20px;" :class="{high:isHigh,normal:isNormal,low:isLow}">{{count}}</span>
+        <a href="javascript:;" @click="count++">increase</a>
+        <em>数组的方式</em>
+        <p v-bind:class="[static,low]">我们可以把一个数组传给 v-bind:class ，以应用一个 class 列表</p>
+        <em>可以在数组语法中使用对象语法</em>
+        <p v-bind:class="[static,low,{'active':'isActive'}]">我们可以把一个数组传给 v-bind:class ，以应用一个 class 列表</p>
+    </div>
+    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript">
+    var app = new Vue({
+        el: '#app',
+        data: {
+            isActive: true,
+            hasError: false,
+            count: 5,
+            classObject: {
+                active: true,
+                'danger-text': false,
+            },
+            static: 'static',
+            low: 'low'
+        },
+        computed: {
+            isHigh: function() {
+                return this.count > 8;
+            },
+            isNormal: function() {
+                return (this.count >= 4 && this.count <= 8);
+            },
+            isLow: function() {
+                return this.count < 4;
+            }
+        },
+        methods: {
+            changeColor: function() {
+                this.classObject["danger-text"] = !this.classObject["danger-text"];
+            }
+        }
+    })
+    </script>
+</body>
+
+</html>
