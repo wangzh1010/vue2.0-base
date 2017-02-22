@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+    em {
+        font-style: normal;
+        background-color: #f5f5f5;
+        color: #e60000;
+        padding: 2px 2px;
+    }
+
+    i {
+        padding: 3px 3px;
+        color: #696969;
+        font-weight: bold;
+        font-style: normal;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <em>监听事件</em>
+        <p>可以用 v-on 指令监听 DOM 事件来触发一些 JavaScript 代码。</p>
+        <p>点击了<em>{{counter}}</em>次 <a href="javascript:;" @click="counter++">add</a></p>
+        <a href="javascript:;" v-on:click="sayHello">say hello</a>
+        <a href="javascript:;" v-on:click="say('吃葡萄不吐葡萄皮')">say</a>
+        <p>有时也需要在内联语句处理器中访问原生 DOM 事件。可以用特殊变量 <em>$event</em> 把它传入方法：</p>
+        <a href="javascript:;" v-on:click="warn($event)">event</a>
+        <p>事件修饰符</p>
+        <em>Vue.js 为 v-on 提供了 事件修饰符。通过由点(.)表示的指令后缀来调用修饰符。</em>
+        <p><em v-for="e in events">.{{e}}</em></p>
+        <p>按键修饰符</p>
+        <p><em v-for="k in keys">.{{k}}</em></p>
+        <p>可以通过全局 config.keyCodes 对象自定义按键修饰符别名：</p>
+        enter: <input type="text" v-model="salary" v-on:keyup.enter="howMuch" name="">
+        <p>yeay: {{year}}</p>
+    </div>
+    <script type="text/javascript" src="lib/vue.js"></script>
+    <script type="text/javascript">
+    var vue = new Vue({
+        el: '#app',
+        data: {
+            counter: 0,
+            name: 'vue',
+            salary: '',
+            year: 0,
+            events:['stop','prevent','capture','self','once'],
+            keys:['enter','tab','delete','esc','scape','up','down','left','right']
+        },
+        methods: {
+            warn: function(e) {
+                var tagName = e.target.tagName;
+                alert('e.target.tagName is "' + tagName + '"');
+            },
+            say: function(msg) {
+                alert(msg);
+            },
+            sayHello: function() {
+                alert('hello ' + this.name);
+            },
+            increase: function(e) {
+                console.log(e.target.tagName);
+                this.counter++;
+            },
+            howMuch: function(event) {
+                this.year = this.salary * 16;
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>
