@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+    em {
+        font-style: normal;
+        background-color: #f5f5f5;
+        color: #e60000;
+        padding: 2px 2px;
+    }
+
+    i {
+        padding: 3px 3px;
+        color: #696969;
+        font-weight: bold;
+        font-style: normal;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <em>v-for</em>
+        <p>我们用 v-for 指令根据一组数组的选项列表进行渲染。 v-for 指令需要以 item in items 形式的特殊语法， items 是源数据数组并且 item 是数组元素迭代的别名。</p>
+        <ul>
+            <li v-for="item in items">{{item.msg}}</li>
+        </ul>
+        <em>在 v-for 块中，我们拥有对父作用域属性的完全访问权限。 v-for 还支持一个可选的第二个参数为当前项的索引。</em>
+        <ul>
+            <li v-for="(item,index) in items">{{pMsg}} - {{index}} - {{item.msg}}</li>
+        </ul>
+        <em>你也可以用 of 替代 in 作为分隔符，因为它是最接近 JavaScript 迭代器的语法：</em>
+        <ul>
+            <li v-for="item of items">{{item.msg}} 使用 <em>of</em> 代替 <em>in</em></li>
+        </ul>
+        <em>对象迭代v-for</em>
+        <ul>
+            <li v-for="value in person">{{value}}</li>
+        </ul>
+        或者
+        <ul>
+            <li v-for="(value,key,index) in person">{{index}}: {{key}} => {{value}}</li>
+        </ul>
+        <em>整数迭代v-for</em>
+        <p><i v-for="i in 10">{{i}}</i></p>
+        <em>组件和v-for</em>
+        <div>
+            <input type="text" v-model="newMsg" name="" @keyup.enter="addNewMsg()">
+            <ul>
+                <li is="todo" v-for="(todo,index) in todos" v-bind:title="todo" v-bind:index="index" v-on:del="remove(index)"></li>
+            </ul>
+            <!-- <todo></todo> -->
+        </div>
+        <em>key ?</em>
+        <br/>
+        <em>数组更新检测</em>
+        <div>由于 JavaScript 的限制， Vue 不能检测以下变动的数组：
+            <br/> 当你利用索引直接设置一个项时，例如： vm.items[indexOfItem] = newValue
+            <br/> 当你修改数组的长度时，例如： vm.items.length = newLength
+            <br/> 为了避免第一种情况，以下两种方式将达到像 vm.items[indexOfItem] = newValue 的效果， 同时也将触发状态更新：</div>
+        <em>Vue.set(example1.items, indexOfItem, newValue)</em>
+        <br/>
+        <em>example1.items.splice(indexOfItem, 1, newValue)</em>
+        <p> 有时，我们想要显示一个数组的过滤或排序副本，而不实际改变或重置原始数据。在这种情况下，可以创建返回过滤或排序数组的计算属性。
+        </p>
+        <em>计算属性</em>
+        <p> <i v-for="n in evenNumbers">{{n}}</i> </p>
+        <em>methods</em>
+        <p> <i v-for="n in odd()">{{n}}</i> </p>
+        <em>去重排序</em>
+        <p><i v-for="v in ary">{{v}}</i></p>
+        <p><i v-for="v1 in newAry">{{v1}}</i></p>
+        <a href="javascript:;" @click="sortAry()">sort</a>
+    </div>
+    <script type="text/javascript" src="lib/vue.js"></script>
+    <script type="text/javascript">
+    Vue.component('todo', {
+        template: '<li>{{title}} <a href="javascript:;" title="delete" @click="$emit(\'del\')">X</a></li>',
+        props: ['title']
+    });
+    var app = new Vue({
+        el: '#app',
+        data: {
+            ary: [9, 11, 22, 3, 55, 9, 77, 1, 5, 66, 89, 4, 65, 9, 23],
+            newAry: [],
+            pMsg: 'parent',
+            items: [{
+                msg: 'Foo'
+            }, {
+                msg: 'Boo'
+            }],
+            person: {
+                fName: 'Foo',
+                lName: 'Koo',
+                age: '30'
+            },
+            newMsg: '',
+            todos: ['Do the dishes',
+                'Take out the trash',
+                'Mow the lawn'
+            ]
+        },
+        computed: {
+            evenNumbers: function() {
+                return this.ary.filter(function(value) {
+                    if (value % 2 === 0) {
+                        return value;
+                    }
+                });
+            }
+        },
+        methods: {
+            addNewMsg: function() {
+                this.todos.push(this.newMsg);
+                this.newMsg = '';
+            },
+            remove: function(index) {
+                this.todos.splice(index, 1);
+            },
+            odd: function() {
+                return this.ary.filter(function(value) {
+                    if (value % 2 !== 0) {
+                        return value;
+                    }
+                });
+            },
+            sortAry: function() {
+                var set = new Set(this.ary);
+                /*var cache = {};
+                var ary2 = [];
+                for (var n = 0; n < this.ary.length; n++) {
+                    if(!cache[this.ary[n]]){
+                        ary2.push(this.ary[n]);
+                        cache[this.ary[n]] = 1;
+                    }
+                }
+                console.log(ary2);*/
+
+                var temp = [...set].sort(function(o1, o2) {
+                    return (parseInt(o1) - parseInt(o2));
+                });
+
+                /*for (var i = 0; i < temp.length - 1; i++) {
+                    for (var j = 0; j < (temp.length - i - 1); j++) {
+                        if (temp[j] > temp[j + 1]) {
+                            [temp[j + 1], temp[j]] = [temp[j], temp[j + 1]];
+                        }
+                    }
+                }*/
+
+                this.newAry = temp;
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>
