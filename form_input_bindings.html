@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <title>表单控件绑定</title>
+    <style type="text/css">
+    em {
+        font-style: normal;
+        background-color: #f5f5f5;
+        color: #e60000;
+        padding: 2px 2px;
+    }
+
+    i {
+        padding: 3px 3px;
+        color: #696969;
+        font-weight: bold;
+        font-style: normal;
+    }
+
+    div {
+        padding: 5px 0px;
+    }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <p>你可以用 v-model 指令在表单控件元素上创建双向数据绑定。它会根据控件类型自动选取正确的方法来更新元素。尽管有些神奇，但 v-model 本质上不过是语法糖，它负责监听用户的输入事件以更新数据，并特别处理一些极端的例子。</p>
+        <p><em>v-model 并不关心表单控件初始化所生成的值。因为它会选择 Vue 实例数据来作为具体的值。</em></p>
+        <div>
+            <input type="text" v-model="msg1" name="" placeholder="say">
+            <p>message is : <em>{{msg1}}</em></p>
+        </div>
+        <div>
+            <textarea v-model="msg2" placeholder="say"></textarea>
+            <p>message is : <em>{{msg2}}</em></p>
+        </div>
+        <div>
+            <label>
+                <input type="checkbox" v-model="items" value="1" name="cb1">apple
+            </label>
+            <label>
+                <input type="checkbox" v-model="items" value="2" name="cb1">orange
+            </label>
+            <label>
+                <input type="checkbox" v-model="items" value="3" name="cb1">banana
+            </label>
+            <p>{{items}}</p>
+        </div>
+        <div>
+            <label>
+                <input type="radio" value="0" name="r1" v-model="which">high
+            </label>
+            <label>
+                <input type="radio" value="1" name="r1" v-model="which">low
+            </label>
+            <p>{{which}}</p>
+        </div>
+        <div>
+            <select v-model="selected">
+                <option value="100">1.1</option>
+                <option value="101">2.1</option>
+                <option value="102">3.1</option>
+            </select>
+            <p>value is : {{selected}}</p>
+        </div>
+        <div>
+            <select v-model="fruit">
+                <option v-for="opt in opts" v-bind:value="opt.value">{{opt.text}}</option>
+            </select>
+            <p>fruit is : {{fruit}}</p>
+        </div>
+        <div>
+            <p>动态</p>
+            <label>
+                <input type="checkbox" v-model="toggle" v-bind:true-value="0" v-bind:false-value="1" name=""> toggle
+            </label>
+            <em>{{toggle}}</em>
+        </div>
+        <div>
+            <label><input type="radio" v-model="picked" v-bind:value="0" name=""></label>
+            <label><input type="radio" v-model="picked" v-bind:value="1" name=""></label>
+            <label><input type="radio" v-model="picked" v-bind:value="2" name=""></label>
+            <p>{{picked}}</p>
+        </div>
+        <em>修饰符</em>
+        <div>
+            <em>lazy</em>
+            <p>在默认情况下， v-model 在 input 事件中同步输入框的值与数据 (除了 上述 IME 部分)，但你可以添加一个修饰符 lazy ，从而转变为在 change 事件中同步：</p>
+            lazy: <input type="text" v-model.lazy="msg3" name=""> <em>{{msg3}}</em>
+        </div>
+        <div>
+            <em>number</em>
+            <p>如果想自动将用户的输入值转为 Number 类型（如果原值的转换结果为 NaN 则返回原值），可以添加一个修饰符 number 给 v-model 来处理输入值：</p>
+            number: <input type="text" v-model.number="msg4" name=""> <em>{{msg4}}</em>
+        </div>
+        <div>
+            <em>trim</em>
+            <p>如果要自动过滤用户输入的首尾空格，可以添加 trim 修饰符到 v-model 上过滤输入</p>
+            trim: <input type="text" v-model.trim="msg5" name=""> <em>{{msg5}}</em>
+        </div>
+    </div>
+    <script type="text/javascript" src="lib/vue.js"></script>
+    <script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: {
+            msg1: '',
+            msg2: '',
+            msg3: '',
+            msg4: '',
+            msg5: '',
+            items: [1],
+            which: [1],
+            selected: 100,
+            fruit: 0,
+            toggle: 0,
+            picked: 1,
+            opts: [{
+                value: 0,
+                text: 'apple'
+            }, {
+                value: 1,
+                text: 'banana'
+            }, {
+                value: 2,
+                text: 'orange'
+            }]
+        },
+        methods: {
+
+        },
+        computed: {}
+    });
+    </script>
+</body>
+
+</html>

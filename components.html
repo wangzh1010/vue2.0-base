@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title></title>
+    <style type="text/css">
+    .base-style {
+        font-size: 20px;
+        font-weight: bold;
+    }
+
+    .default {
+        color: #696969;
+    }
+
+    .danger {
+        color: #e60000;
+    }
+
+    .info {
+        color: #ff00ff;
+    }
+
+    em {
+        font-style: normal;
+        background-color: #f5f5f5;
+        color: #e60000;
+        padding: 2px 2px;
+    }
+
+    i {
+        padding: 3px 3px;
+        color: #696969;
+        font-weight: bold;
+        font-style: normal;
+    }
+
+    div {
+        padding: 10px 0px;
+    }
+
+    button {
+        margin-right: 10px;
+    }
+
+    div {
+        max-width: 50%;
+    }
+    ul{
+        padding: 0 0;
+        margin: 0 0;
+        list-style: none;
+        overflow: hidden;
+    }
+    .dynamic ul li{
+        float: left;
+        margin-right: 10px;
+    }
+
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <p>组件（Component）是 Vue.js 最强大的功能之一。组件可以扩展 HTML 元素，封装可重用的代码。在较高层面上，组件是自定义元素， Vue.js 的编译器为它添加特殊功能。在有些情况下，组件也可以是原生 HTML 元素的形式，以 <em> is </em> 特性扩展。</p>
+        <div>
+            <em>custom component</em>
+            <my-component></my-component>
+            <child-component></child-component>
+        </div>
+        <em>DOM模板解析说明</em>
+        <p>当使用 DOM 作为模版时（例如，将 el 选项挂载到一个已存在的元素上）, 你会受到 HTML 的一些限制，因为 Vue 只有在浏览器解析和标准化 HTML 后才能获取模版内容。尤其像这些元素 &lt;ul&gt; ， &lt;ol&gt;， &lt;table&gt; ， &lt;select&gt; 限制了能被它包裹的元素， &lt;option&gt; 只能出现在其它元素内部。</p>
+        <p>data必须是函数</p>
+        <em>使用组件时，大多数可以传入到 Vue 构造器中的选项可以在注册组件时使用，有一个例外： data 必须是函数。</em>
+        <div>
+            <simple-counter v-for="n in 3" v-on:inc="handleInc"></simple-counter>
+            total：<em>{{total}}</em>
+        </div>
+        <em>组件构成</em>
+        <p>组件意味着协同工作，通常父子组件会是这样的关系：组件 A 在它的模版中使用了组件 B 。它们之间必然需要相互通信：父组件要给子组件传递数据，子组件需要将它内部发生的事情告知给父组件。然而，在一个良好定义的接口中尽可能将父子组件解耦是很重要的。这保证了每个组件可以在相对隔离的环境中书写和理解，也大幅提高了组件的可维护性和可重用性。 </p>
+        <p>在 Vue.js 中，父子组件的关系可以总结为 props down, events up 。父组件通过 props 向下传递数据给子组件，子组件通过 events 给父组件发送消息。看看它们是怎么工作的。</p>
+        <img src="img/props-events.png" width="300">
+        <br/>
+        <em>Prop</em> 使用Prop传递数据
+        <p>
+            <em>组件实例的作用域是孤立的。这意味着不能并且不应该在子组件的模板内直接引用父组件的数据。可以使用 props 把数据传给子组件。</em>
+        </p>
+        <p>
+            <em>prop 是父组件用来传递数据的一个自定义属性。子组件需要显式地用 props 选项声明 “prop”：</em>
+        </p>
+        静态props
+        <p>
+            <child msg="hello child component"></child>
+        </p>
+        动态props
+        <p>类似于用 v-bind 绑定 HTML 特性到一个表达式，也可以用 v-bind 动态绑定 props 的值到父组件的数据中。每当父组件的数据变化时，该变化也会传导给子组件：</p>
+        <div>
+            say :
+            <input type="text" v-model="info" name="">
+            <br/> the message is :
+            <child v-bind:msg="info"></child>
+        </div>
+        单向数据流
+        <p>prop 是单向绑定的：当父组件的属性变化时，将传导给子组件，但是不会反过来。这是为了防止子组件无意修改了父组件的状态——这会让应用的数据流难以理解。</p>
+        <p>另外，每次父组件更新时，子组件的所有 prop 都会更新为最新值。这意味着你不应该在子组件内部改变 prop 。</p>
+        <em>Prop验证</em>
+        <br/>
+        <em>自定义事件</em>
+        <p>使用v-on绑定自定义事件</p>
+        <ul>
+            <li>使用 $on(eventName) 监听事件</li>
+            <li>使用 $emit(eventName) 触发事件</li>
+        </ul>
+        非父子组件通信
+        <p>有时候非父子关系的组件也需要通信。在简单的场景下，使用一个空的 Vue 实例作为中央事件总线：</p>
+        <p>var bus = new Vue()</p>
+        <p>bus.$emit('id-selected', 1)</p>
+        <p>
+            bus.$on('id-selected', function (id) { // ... });
+        </p>
+        <p><em>使用Slot分发内容</em></p>
+        <em>单个Slot</em>
+        <div style="border: 1px dashed #333333;margin: 10px 0px;">
+            <h3>我是父组件的标题</h3>
+            <slot-tmpl>
+                <p>这是一些初始内容1</p>
+                <em>这是一些初始内容2</em>
+            </slot-tmpl>
+        </div>
+        <em>具名Slot</em>
+        <p>&lt;slot&gt; 元素可以用一个特殊的属性 name 来配置如何分发内容。多个 slot 可以有不同的名字。具名 slot 将匹配内容片段中有对应 slot 特性的元素。</p>
+        <div style="border: 1px dashed #333333;margin: 10px 0px;">
+            <slot-tmpl2>
+                <p slot="header">我是组件的标题</p>
+                <p>这是段落</p>
+                <p>这是段落</p>
+                <p slot="footer">这里有一些联系信息</p>
+            </slot-tmpl2>
+        </div>
+        <em>作用域插槽</em>
+        <div style="border: 1px dashed #333333;margin: 10px 0px;">
+            <slot-tmpl3>
+                <template scope="props">
+                    <span style="margin-bottom: 10px;display: block;">from parent</span>
+                    <em>{{props.text}}</em>
+                </template>
+            </slot-tmpl3>
+        </div>
+        <div style="border: 1px dashed #333333;margin: 10px 0px;">
+            列表
+            <my-list v-bind:items="items">
+                <template slot="ul-list" scope="props">
+                    <li>{{props.text}}</li>
+                </template>
+            </my-list>
+        </div>
+        动态组件
+        <div class="dynamic">
+            <ul>
+                <li><a href="javascript:;" @click="currentView = 'home'">home</a></li>
+                <li><a href="javascript:;" @click="currentView = 'posts'">posts</a></li>
+            </ul>
+            <div>
+                <keep-alive>
+                <component v-bind:is="currentView"></component>
+                </keep-alive>
+            </div>
+        </div>
+        <em>keep-alive 如果把切换出去的组件保留在内存中，可以保留它的状态或避免重新渲染。为此可以添加一个 keep-alive 指令参数：</em>
+        <div class="danger" v-bind:class="{'default base-style':isActive,'danger':isDanger,'info':isPrimary}">just a test</div>
+        <div v-bind:class="classObj2"> another test</div>
+        <span v-for="t in msg">
+            {{t}}
+            <span v-for="t1 in t">
+                {{t1.age}}
+            </span>
+        </span>
+    </div>
+    <script type="text/javascript" src="lib/vue.js"></script>
+    <script type="text/javascript">
+    //局部注册
+    var CustomTmpl = {
+        template: '<div>A custom component!</div>'
+    };
+    var Child = {
+        props: ['msg'],
+        template: '<i>{{msg}}</i>'
+    };
+    var SlotTmpl = {
+        template: '<div style="border:1px dashed #d3d3d3;"><h4>我是子组件的标题</h4><slot><em>这里是插槽</em></slot></div>'
+    };
+    var NamedSlotTmpl = {
+        template: '<div>\
+            <header><slot name="header"></slot></header>\
+            <main><slot></slot></main>\
+            <footer><slot name="footer"></slot></footer>\
+            </div>'
+    };
+    var ScopeSlotTmpl = {
+        template: '<p><slot text="hello from scope slot template"></slot></p>'
+    };
+    var List = {
+        props: ['items'],
+        template: '<ul><slot name="ul-list" v-for="item in items" v-bind:text="item"></slot></ul>'
+    };
+    // 全局注册
+    Vue.component('my-component', {
+        template: '<div>A custom component!</div>'
+    });
+    Vue.component('simple-counter', {
+        template: '<button v-on:click="increase">{{counter}}</button>',
+        data: function() {
+            return {
+                counter: 0
+            }
+        },
+        methods: {
+            increase: function() {
+                this.counter++;
+                var message = 'current num is: ' + this.counter;
+                this.$emit('inc', [this.counter, message]);
+            }
+        }
+    });
+    new Vue({
+        el: '#app',
+        data: {
+            total: 0,
+            msg: 'counter',
+            isActive: true,
+            isDanger: true,
+            isPrimary: false,
+            isInfo: false,
+            info: '',
+            classObj: {
+                'info base-style': true
+            },
+            msg: {
+                'a': [{
+                    age: 1
+                }, {
+                    age: 2
+                }, {
+                    age: 3
+                }],
+                'b': [11, 12, 13],
+                'c': [21, 22, 23]
+            },
+            items: ['Foo', 'Bar', 'Koo', 'Laa'],
+            currentView: 'home'
+        },
+        computed: {
+            classObj2: function() {
+                return {
+                    'info base-style': this.isInfo,
+                    'danger': this.isDanger
+                }
+            }
+        },
+        methods: {
+            handleInc: function(args) {
+                console.log(args);
+                this.total++;
+            }
+        },
+        components: {
+            'child-component': CustomTmpl,
+            'child': Child,
+            'slot-tmpl': SlotTmpl,
+            'slot-tmpl2': NamedSlotTmpl,
+            'slot-tmpl3': ScopeSlotTmpl,
+            'my-list': List,
+            'home':{
+                template:'<span style="color:#e60000;">home page</span>'
+            },
+            'posts':{
+                template:'<span style="color:#1234f2">posts page</span>'
+            }
+        }
+    });
+    </script>
+</body>
+
+</html>
