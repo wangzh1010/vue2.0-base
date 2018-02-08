@@ -7,6 +7,7 @@
 
 <body>
     <div id="app">
+        <p>电话 <a v-bind:href="mobileHref">{{mobile}}</a></p>
         <p>{{a}}</p>
         <p>Vue 实例暴露了一些有用的实例属性与方法。这些属性与方法都有前缀 $，以便与代理的 data 属性区分。</p>
         <p>app.$data === data</p>
@@ -18,14 +19,19 @@
             <img src="lifecycle.png" width="800">
         </p>
     </div>
-    <script type="text/javascript" src="vue.js"></script>
+    <script type="text/javascript" src="lib/vue.js"></script>
     <script type="text/javascript">
     var data = {
-        a: 1
+        a: 1,
+        mobile:'15101063133',
+
     }
     var app = new Vue({
         el: '#app',
-        data: data,
+        data: {
+            mobile:15101063133,
+            a:1
+        },
         mounted: function() {
             console.log('mounted');
         },
@@ -45,7 +51,9 @@
             }
         },
         computed: {
-
+            mobileHref(){
+                return 'tel:' + this.mobile;
+            }
         },
         watch: {
             a: function(newVal, oldVal) {
