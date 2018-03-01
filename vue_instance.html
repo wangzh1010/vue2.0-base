@@ -3,10 +3,13 @@
 
 <head>
     <title></title>
+    <style type="text/css">
+        [v-cloak]{display: none;}
+    </style>
 </head>
 
 <body>
-    <div id="app">
+    <div id="app" v-cloak>
         <p>电话 <a v-bind:href="mobileHref">{{mobile}}</a></p>
         <p>{{a}}</p>
         <p>Vue 实例暴露了一些有用的实例属性与方法。这些属性与方法都有前缀 $，以便与代理的 data 属性区分。</p>
@@ -18,6 +21,7 @@
         <p>
             <img src="lifecycle.png" width="800">
         </p>
+        <a v-bind:href="link">{{link}}</a>
     </div>
     <script type="text/javascript" src="lib/vue.js"></script>
     <script type="text/javascript">
@@ -30,7 +34,8 @@
         el: '#app',
         data: {
             mobile:15101063133,
-            a:1
+            a:1,
+            link:'http://www.baidu.com'
         },
         mounted: function() {
             console.log('mounted');
